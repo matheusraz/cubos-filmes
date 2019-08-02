@@ -1,0 +1,29 @@
+{
+  "name": "cubos-filmes",
+  "version": "1.0.0",
+  "description": "App para consumo da API do The Movies DB",
+  "main": "index.js",
+  "scripts": {
+    "dev": "nodemon index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/matheusraz/cubos-filmes.git"
+  },
+  "author": "Matheus Raz (mrol)",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/matheusraz/cubos-filmes/issues"
+  },
+  "homepage": "https://github.com/matheusraz/cubos-filmes#readme",
+  "dependencies": {
+    "express": "^4.17.1",
+    "nodemon": "^1.19.1"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.5.5",
+    "@babel/preset-env": "^7.5.5",
+    "@babel/register": "^7.5.5"
+  }
+}
