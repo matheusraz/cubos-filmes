@@ -16,6 +16,10 @@ responseMessage = (keys, values) => {
     }
 }
 
+isFloat = (n) => {
+    return (n / 5) % Math.round(n / 5) !== 0;
+}
+
 convertPage = (total_pages) => {
     let partes = {}
     for(i = 1; i <= 4; ++i) {
@@ -56,7 +60,7 @@ router.get("/", (req, res) => {
     res.json(responseMessage(['status', 'msg'],['1', 'Estou de pé!']));
 });
 
-router.get("/filme", (req, res) => {
+router.get("/buscaFilme", (req, res) => {
 
     let movie = req.headers.movie;
     let page = req.headers.page;
@@ -89,20 +93,24 @@ router.get("/filme", (req, res) => {
         response.on('end', () => {
             response = JSON.parse(data);
             let obj;
+            let totalPages = response.total_results / 5;
+            if(isFloat(totalPages)){
+                totalPages = Math.round(totalPages) + 1;
+            }
             if(pagePartition === undefined) {
                 obj = {
-                    total_pages: Math.round(response.total_results / 5),
+                    total_pages: totalPages,
                     items: response.results.slice(0, 5)
                 }
             } else {
                 try {
                     obj = {
-                        total_pages: Math.round(response.total_results / 5),
+                        total_pages: totalPages,
                         items: response.results.slice(pagePartition.range.inicio-1, pagePartition.range.fim)
                     }
                 } catch (err) {
                     obj = {
-                        total_pages: Math.round(response.total_results / 5),
+                        total_pages: totalPages,
                         items: response.results.slice(pagePartition.range.inicio-1, response.results.length)
                     }
                 }
@@ -119,6 +127,66 @@ router.get("/filme", (req, res) => {
     request.write("");
     request.end();
 
+});
+
+router.get('/buscaGenero', (req, res) => {
+
+    let generoId = req.headers.idgenero;
+    let page = req.headers.page;
+    let total_pages = req.headers.totalpages;
+
+    let realPage = 1;
+    let pagePartition;
+
+    if(total_pages !== undefined) {
+        let mapaPages = convertPage(total_pages);
+        pagePartition = mapaPages[page];
+        realPage = pagePartition.paginaReal;
+    }
+
+    https_options = {
+        'host': `api.themoviedb.org`,
+        'path': `/3/discover/movie?api_key=${api_key}&language=pt-BR&&page=1&with_genres=${generoId}&page=${realPage}`,
+        'method': 'GET',
+        'headers': {}
+    }
+
+    let request = https.request(https_options, (response) => {
+        let data = "";
+
+        response.on('data', (chunk) => {
+            data += chunk;
+        });
+
+        response.on('end', () => {
+            response = JSON.parse(data);
+            let obj;
+            let totalPages = Math.ceil(response.total_results / 5);
+            if(pagePartition === undefined) {
+                obj = {
+                    total_pages: totalPages,
+                    items: response.results.slice(0, 5)
+                }
+            } else {
+                try {
+                    obj = {
+                        total_pages: totalPages,
+                        items: response.results.slice(pagePartition.range.inicio-1, pagePartition.range.fim)
+                    }
+                } catch (err) {
+                    obj = {
+                        total_pages: totalPages,
+                        items: response.results.slice(pagePartition.range.inicio-1, response.results.length)
+                    }
+                }
+            }
+            res.json(responseMessage(['status', 'msg'], ['1', obj]));
+        })
+    })
+
+    request.write("");
+    request.end();
+    
 });
 
 router.get('/generos', (req, res) => {
