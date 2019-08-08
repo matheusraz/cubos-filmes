@@ -1,0 +1,10 @@
+version: '3'
+services:
+  back:
+    image: matraz/cubos-back:latest
+    ports: 
+      - 9090:3000
+  front:
+    image: matraz/cubos-front:latest
+    ports: 
+      - 80:80
