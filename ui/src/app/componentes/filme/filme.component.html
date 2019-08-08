@@ -1,0 +1,46 @@
+<div id='movie' style="text-align: center">
+  <h1>{{movie.title}}</h1>
+  <p style="text-align: center">{{movie.release_date | date:'dd/MM/yyyy'}}</p>
+  <img src="https://image.tmdb.org/t/p/w185_and_h278_bestv2{{movie.poster_path}}">
+
+  <div>
+    <h3>Sinopse</h3>
+    <div>
+      {{movie.overview}}
+    </div>
+  </div>
+
+  <div style="text-align: center">
+    <h3>Informações</h3>
+    <div>
+      Situação:
+      {{(movie.status === 'Released') ? 'Lançado' : movie.status}}
+    </div>
+    <div>
+      <div>
+        Idioma:
+        {{movie.spoken_languages[0].name}}
+      </div>
+      <div>
+        Orçamento:
+        ${{movie.budget}}
+      </div>
+      <div>
+        Receita:
+        ${{movie.revenue}}
+      </div>
+      <div>
+        Lucro:
+        ${{movie.revenue - movie.budget}}
+      </div>
+    </div>
+
+    <div>
+      <h3>Generos</h3>
+      <div *ngFor="let gen of movie.genres">
+        {{gen.name}}
+      </div>
+    </div>
+  </div>
+
+</div>

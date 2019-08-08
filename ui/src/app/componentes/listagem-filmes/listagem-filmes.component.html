@@ -1,3 +1,46 @@
-<p>
-  listagem-filmes works!
-</p>
+<div class="cabecalho">
+  <h1 class="color-cabecalho-text">Movies</h1>
+</div>
+
+<div>
+  <input class="buscador" placeholder="Busque um filme por nome ou gênero..."
+    (input)="search($event.target.value)">
+
+  <br><br>
+
+  <div id='movie' style="text-align: center" *ngFor="let movie of movies">
+    <img (click)="onClickMovie(movie)" src="https://image.tmdb.org/t/p/w185_and_h278_bestv2{{movie.poster_path}}">
+
+    <div id='info'>
+      <div id='title'>
+        <h1>{{movie.title}}</h1>
+      </div>
+
+      <div id='date'>
+        {{movie.release_date | date:'dd/MM/yyyy'}}
+      </div>
+
+      <div id='sinopse'>
+        <p>{{movie.overview}}</p>
+      </div>
+
+      <div id='generos'>
+        <h3>Generos</h3>
+        <div *ngFor="let gen of movie.genre_ids">
+          {{jsonGeneros[gen]}}
+        </div>
+      </div>
+      <br><br>
+
+    </div>
+  </div>
+
+  <div *ngIf="movies.length > 0" id='pagination' class="pagination">
+    <a (click)="lessPages()">&laquo;</a>
+    <a id='page{{page}}' *ngFor="let page of pages.slice(startPage-1, endPage)" (click)="callPage(page)">{{page}}</a>
+    <a (click)="morePages()">&raquo;</a>
+  </div>
+
+  
+
+</div>

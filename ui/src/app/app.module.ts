@@ -6,6 +6,8 @@ import { LocationStrategy, HashLocationStrategy } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { ROUTES } from './app.routes';
 import { ListagemFilmesModule } from './componentes/listagem-filmes/listagem-filmes.module';
+import { HttpClientModule } from '@angular/common/http';
+import { FilmeModule } from './componentes/filme/filme.module';
 
 @NgModule({
   declarations: [
@@ -14,7 +16,9 @@ import { ListagemFilmesModule } from './componentes/listagem-filmes/listagem-fil
   imports: [
     BrowserModule,
     RouterModule.forRoot(ROUTES),
-    ListagemFilmesModule
+    ListagemFilmesModule,
+    FilmeModule,
+    HttpClientModule
   ],
   providers: [{provide: LocationStrategy, useClass: HashLocationStrategy}],
   bootstrap: [AppComponent]

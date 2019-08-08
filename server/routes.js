@@ -92,11 +92,8 @@ router.get("/buscaFilme", (req, res) => {
 
         response.on('end', () => {
             response = JSON.parse(data);
-            let obj;
-            let totalPages = response.total_results / 5;
-            if(isFloat(totalPages)){
-                totalPages = Math.round(totalPages) + 1;
-            }
+            let obj;;
+            let totalPages = Math.ceil(response.total_results / 5);
             if(pagePartition === undefined) {
                 obj = {
                     total_pages: totalPages,
@@ -209,6 +206,41 @@ router.get('/generos', (req, res) => {
         response.on('end', () => {
             response = JSON.parse(data);
             res.json(responseMessage(['status', 'msg'], ['1', response.genres]));
+        })
+
+        response.on('error', (err) => {
+            res.json(responseMessage(['status', 'msg'], ['0', err]));
+            console.log(err);
+        })
+    });
+
+    request.write("");
+    request.end();
+
+});
+
+router.get('/filme/:id',(req, res) => {
+
+    let movieId = req.params.id;
+
+    https_options = {
+        'host': `api.themoviedb.org`,
+        'path': `/3/movie/${movieId}?api_key=${api_key}&language=pt-BR`,
+        'method': 'GET',
+        'headers': {}
+    }
+
+    let request = https.request(https_options, (response) => {
+
+        let data = '';
+        
+        response.on('data', (chunk) => {
+            data += chunk;
+        })
+
+        response.on('end', () => {
+            response = JSON.parse(data);
+            res.json(responseMessage(['status', 'msg'], ['1', response]));
         })
 
         response.on('error', (err) => {
