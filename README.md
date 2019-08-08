@@ -8,7 +8,7 @@ Author: Matheus Raz (mrol)
 1 - Para rodar a aplicação basta possuir o docker instalado na máquina
 
 &nbsp;
-2 - Após clonar o repositório, dentro do diretório do basta rodar o comando `docker-compose up -d`
+2 - Após clonar o repositório, dentro do diretório basta rodar o comando `docker-compose up -d`
 
 &nbsp;
 3 - Após a execução do comando acima, dois containers serão levantados `cubos-back` e `cubos-front`
